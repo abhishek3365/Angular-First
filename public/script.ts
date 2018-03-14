@@ -4,23 +4,20 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-@Component({
-    selector : 'player',
-    template : `
-        <h1>{{name}}</h1>
-        <h5>{{club}}</h5>
-    `
-})
-class PlayerComponent
-{
+class Player{
     name : string;
     club : string;
+    hide : boolean;
 
-    constructor( ) {
-        this.name = "Lionel Messi";
-        this.club = "FC Barcelona";
+    constructor( name : string , club : string ) {
+        this.name = name;
+        this.club = club;
+        this.hide = true;   
     }
 
+    toggle() {
+        this.hide = !this.hide;
+    }
 }
 
 @Component({
@@ -29,7 +26,7 @@ class PlayerComponent
         <div class="card card-block" *ngFor="let player of players">
             <h4 class="card-title">{{player.name}}</h4>
             <p class="card-text" [hidden]="player.hide">{{player.club}}</p>
-            <a class="btn btn-primary" (click)="toggle(player)">Show Club</a>
+            <a class="btn btn-primary" (click)="player.toggle()">Show Club</a>
         </div>
     `
 })
@@ -38,33 +35,18 @@ class PlayerListComponent{
 
     constructor(){
         this.players = [
-            {
-                name : "Lionel Messi",
-                club : "FC Barcelona",
-                hide : true
-            },
-            {
-                name : "Cristiano Ronaldo",
-                club : "Real Madrid",
-                hide : true
-            },
-            {
-                name : "Kevin De Bruyne",
-                club : "Manchester City",
-                hide : true
-            }
+            new Player("Lionel Messi","FC Barcelona"),
+            new Player("Cristiano Ronaldo","Real Madrid"),
+            new Player("Kevin De Bruyne","Manchester City")
         ];
     }
-
-    toggle(player) {
-        player.hide = !player.hide;
-    }
+    
 }
 
 
 @NgModule({
     imports : [BrowserModule],
-    declarations : [PlayerComponent,PlayerListComponent],
+    declarations : [PlayerListComponent],
     bootstrap : [PlayerListComponent]
 })
 export class AppModule{
