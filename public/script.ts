@@ -11,7 +11,7 @@ import { BrowserModule } from '@angular/platform-browser';
         <h5>{{club}}</h5>
     `
 })
-class Player
+class PlayerComponent
 {
     name : string;
     club : string;
@@ -23,10 +23,41 @@ class Player
 
 }
 
+@Component({
+    selector : 'player-list',
+    template : `
+        <div class="card card-block" *ngFor="let player of players">
+            <h4 class="card-title">{{player.name}}</h4>
+            <p class="card-text">{{player.club}}</p>
+        </div>
+    `
+})
+class PlayerListComponent{
+    players : Object[];
+
+    constructor(){
+        this.players = [
+            {
+                name : "Lionel Messi",
+                club : "FC Barcelona"
+            },
+            {
+                name : "Cristiano Ronaldo",
+                club : "Real Madrid"
+            },
+            {
+                name : "Kevin De Bruyne",
+                club : "Manchester City"
+            }
+        ];
+    }
+}
+
+
 @NgModule({
     imports : [BrowserModule],
-    declarations : [Player],
-    bootstrap : [Player]
+    declarations : [PlayerComponent,PlayerListComponent],
+    bootstrap : [PlayerListComponent]
 })
 export class AppModule{
 
