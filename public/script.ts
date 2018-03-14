@@ -4,6 +4,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { Input } from '@angular/core';
+import { Output, EventEmitter } from '@angular/core';
 
 class Player{
     name : string;
@@ -19,6 +20,39 @@ class Player{
     toggle() {
         this.hide = !this.hide;
     }
+}
+
+@Component({
+    selector: 'player-form',
+    template: `
+        <div class="card card-block">
+            <h4 class="card-title">Create Player</h4>
+            <div class="form-group">
+                <input type="text"
+                    class="form-control"
+                    placeholder="Enter the player name"
+                    #name>
+            </div>
+            <div class="form-group">
+                <input type="text"
+                    class="form-control"
+                    placeholder="Enter the player club"
+                    #club>
+            </div>
+            <button type="button"
+                    class="btn btn-primary"
+                    (click)="createPlayer(name.value,club.value) ">Add
+            </button>
+        </div>
+    `
+})
+class JokeFormComponent {
+    @Output() playerCreated = new EventEmitter<Player>();
+
+    createPlayer( name : string , club : string ){
+        this.playerCreated.emit( new Player('Andres Iniesta','FC Barcelona') );
+    }
+
 }
 
 @Component({
@@ -39,6 +73,9 @@ class PlayerComponent
 @Component({
     selector : 'player-list',
     template : `
+        <player-form 
+            (playerCreated)="addPlayer($event)"> 
+        </player-form>
         <player *ngFor="let player of players" [data]="player"></player>
     `
 })
@@ -51,6 +88,10 @@ class PlayerListComponent{
             new Player("Cristiano Ronaldo","Real Madrid"),
             new Player("Kevin De Bruyne","Manchester City")
         ];
+    }
+
+    addPlayer(player) {
+        this.players.unshift(player);
     }
     
 }
@@ -67,7 +108,7 @@ class AppComponent {
 
 @NgModule({
     imports : [BrowserModule],
-    declarations : [AppComponent,PlayerListComponent,PlayerComponent],
+    declarations : [AppComponent,PlayerListComponent,PlayerComponent,JokeFormComponent],
     bootstrap : [AppComponent]
 })
 export class AppModule{
