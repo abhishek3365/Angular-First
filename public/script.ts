@@ -28,7 +28,8 @@ class PlayerComponent
     template : `
         <div class="card card-block" *ngFor="let player of players">
             <h4 class="card-title">{{player.name}}</h4>
-            <p class="card-text">{{player.club}}</p>
+            <p class="card-text" [hidden]="player.hide">{{player.club}}</p>
+            <a class="btn btn-primary" (click)="toggle(player)">Show Club</a>
         </div>
     `
 })
@@ -39,17 +40,24 @@ class PlayerListComponent{
         this.players = [
             {
                 name : "Lionel Messi",
-                club : "FC Barcelona"
+                club : "FC Barcelona",
+                hide : true
             },
             {
                 name : "Cristiano Ronaldo",
-                club : "Real Madrid"
+                club : "Real Madrid",
+                hide : true
             },
             {
                 name : "Kevin De Bruyne",
-                club : "Manchester City"
+                club : "Manchester City",
+                hide : true
             }
         ];
+    }
+
+    toggle(player) {
+        player.hide = !player.hide;
     }
 }
 
