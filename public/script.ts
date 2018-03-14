@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { Input } from '@angular/core';
 
 class Player{
     name : string;
@@ -21,13 +22,24 @@ class Player{
 }
 
 @Component({
+    selector : 'player',
+    template : `
+        <div class="card card-block">
+            <h4 class="card-title">{{data.name}}</h4>
+            <p class="card-text" [hidden]="data.hide">{{data.club}}</p>
+            <a class="btn btn-primary" (click)="data.toggle()">Show Club</a>
+        </div>
+    `
+})
+class PlayerComponent
+{
+    @Input() data: Player;
+}
+
+@Component({
     selector : 'player-list',
     template : `
-        <div class="card card-block" *ngFor="let player of players">
-            <h4 class="card-title">{{player.name}}</h4>
-            <p class="card-text" [hidden]="player.hide">{{player.club}}</p>
-            <a class="btn btn-primary" (click)="player.toggle()">Show Club</a>
-        </div>
+        <player *ngFor="let player of players" [data]="player"></player>
     `
 })
 class PlayerListComponent{
@@ -44,10 +56,19 @@ class PlayerListComponent{
 }
 
 
+@Component({
+    selector: 'app',
+    template: `
+    <player-list></player-list>
+    `
+})
+class AppComponent {
+}
+
 @NgModule({
     imports : [BrowserModule],
-    declarations : [PlayerListComponent],
-    bootstrap : [PlayerListComponent]
+    declarations : [AppComponent,PlayerListComponent,PlayerComponent],
+    bootstrap : [AppComponent]
 })
 export class AppModule{
 
