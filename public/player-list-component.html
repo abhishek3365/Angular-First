@@ -1,7 +1,13 @@
-<player-form 
-    (playerCreated)="addPlayer($event)"> 
-</player-form>
 <player *ngFor="let player of players" [data]="player">
     <span class="name">{{ player.name }}</span>
     <span class="club">{{ player.club }}</span> 
 </player>
+
+<button type="button"
+        class="btn btn-success"
+        (click)="addPlayer()">Add Player
+</button>
+<button type="button"
+        class="btn btn-danger"
+        (click)="deletePlayer()">Clear Players
+</button>

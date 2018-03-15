@@ -1,10 +1,11 @@
 // This is where we will add our code :)
-import { Component } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { Input } from '@angular/core';
-import { Output, EventEmitter } from '@angular/core';
+import {
+    Component,NgModule,Input,Output,EventEmitter,ViewEncapsulation,SimpleChanges,
+    OnChanges,OnInit,DoCheck,AfterContentInit,AfterContentChecked,AfterViewInit,AfterViewChecked,
+    OnDestroy
+} from '@angular/core';
 
 class Player{
     name : string;
@@ -33,7 +34,7 @@ class Player{
         `
       ] 
 })
-class JokeFormComponent {
+class PlayerFormComponent {
     @Output() playerCreated = new EventEmitter<Player>();
 
     createPlayer( name : string , club : string ){
@@ -50,6 +51,48 @@ class JokeFormComponent {
 class PlayerComponent
 {
     @Input() data: Player;
+
+    constructor() {
+        console.log(`new - data is ${this.data}`);
+      }
+    
+      ngOnChanges(changes: SimpleChanges) {
+        console.log(`ngOnChanges - data is ${this.data}`);
+        for (let key in changes) {
+            console.log(`${key} changed.
+            Current: ${changes[key].currentValue}.
+            Previous: ${changes[key].previousValue}`);
+          }
+      }
+    
+      ngOnInit() {
+        console.log(`ngOnInit  - data is ${this.data}`);
+      }
+    
+      ngDoCheck() {
+        console.log("ngDoCheck")
+      }
+    
+      ngAfterContentInit() {
+        console.log("ngAfterContentInit");
+      }
+    
+      ngAfterContentChecked() {
+        console.log("ngAfterContentChecked");
+      }
+    
+      ngAfterViewInit() {
+        console.log("ngAfterViewInit");
+      }
+    
+      ngAfterViewChecked() {
+        console.log("ngAfterViewChecked");
+      }
+    
+      ngOnDestroy() {
+        console.log("ngOnDestroy");
+      }
+
 }
 
 @Component({
@@ -57,19 +100,15 @@ class PlayerComponent
     templateUrl: './player-list-component.html' 
 })
 class PlayerListComponent{
-    players : Object[];
+    
+    players : Player[] = [];
 
-    constructor(){
-        this.players = [
-            new Player("Lionel Messi","FC Barcelona"),
-            new Player("Cristiano Ronaldo","Real Madrid"),
-            new Player("Kevin De Bruyne","Manchester City")
-        ];
+    addPlayer(  ) {
+        this.players.unshift( new Player("Lionel Messi","FC Barcelona") );
     }
 
-    addPlayer( player ) {
-        console.log('here2' , player);
-        this.players.unshift(player);
+    deletePlayer() {
+        this.players = [];
     }
     
 }
@@ -84,7 +123,7 @@ class AppComponent {
 
 @NgModule({
     imports : [BrowserModule],
-    declarations : [AppComponent,PlayerListComponent,PlayerComponent,JokeFormComponent],
+    declarations : [AppComponent,PlayerListComponent,PlayerComponent,PlayerFormComponent],
     bootstrap : [AppComponent]
 })
 export class AppModule{
