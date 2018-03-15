@@ -1,0 +1,19 @@
+<div class="card card-block">
+    <h4 class="card-title">Create Player</h4>
+    <div class="form-group">
+        <input type="text"
+            class="form-control"
+            placeholder="Enter the player name"
+            #name>
+    </div>
+    <div class="form-group">
+        <input type="text"
+            class="form-control"
+            placeholder="Enter the player club"
+            #club>
+    </div>
+    <button type="button"
+            class="btn btn-primary"
+            (click)="createPlayer(name.value,club.value)">Add
+    </button>
+</div>

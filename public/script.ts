@@ -24,46 +24,21 @@ class Player{
 
 @Component({
     selector: 'player-form',
-    template: `
-        <div class="card card-block">
-            <h4 class="card-title">Create Player</h4>
-            <div class="form-group">
-                <input type="text"
-                    class="form-control"
-                    placeholder="Enter the player name"
-                    #name>
-            </div>
-            <div class="form-group">
-                <input type="text"
-                    class="form-control"
-                    placeholder="Enter the player club"
-                    #club>
-            </div>
-            <button type="button"
-                    class="btn btn-primary"
-                    (click)="createPlayer(name.value,club.value) ">Add
-            </button>
-        </div>
-    `
+    templateUrl: './player-form-component.html' 
 })
 class JokeFormComponent {
     @Output() playerCreated = new EventEmitter<Player>();
 
     createPlayer( name : string , club : string ){
-        this.playerCreated.emit( new Player('Andres Iniesta','FC Barcelona') );
+        console.log ( "here 1" , name , club  );
+        this.playerCreated.emit( new Player(name,club) );
     }
 
 }
 
 @Component({
     selector : 'player',
-    template : `
-        <div class="card card-block">
-            <h4 class="card-title">{{data.name}}</h4>
-            <p class="card-text" [hidden]="data.hide">{{data.club}}</p>
-            <a class="btn btn-primary" (click)="data.toggle()">Show Club</a>
-        </div>
-    `
+    templateUrl: './player-component.html'  
 })
 class PlayerComponent
 {
@@ -72,12 +47,7 @@ class PlayerComponent
 
 @Component({
     selector : 'player-list',
-    template : `
-        <player-form 
-            (playerCreated)="addPlayer($event)"> 
-        </player-form>
-        <player *ngFor="let player of players" [data]="player"></player>
-    `
+    templateUrl: './player-list-component.html' 
 })
 class PlayerListComponent{
     players : Object[];
@@ -90,7 +60,8 @@ class PlayerListComponent{
         ];
     }
 
-    addPlayer(player) {
+    addPlayer( player ) {
+        console.log('here2' , player);
         this.players.unshift(player);
     }
     
@@ -99,9 +70,7 @@ class PlayerListComponent{
 
 @Component({
     selector: 'app',
-    template: `
-    <player-list></player-list>
-    `
+    templateUrl: './app-component.html' 
 })
 class AppComponent {
 }
