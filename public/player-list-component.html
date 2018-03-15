@@ -1,4 +1,7 @@
 <player-form 
     (playerCreated)="addPlayer($event)"> 
 </player-form>
-<player *ngFor="let player of players" [data]="player"></player>
+<player *ngFor="let player of players" [data]="player">
+    <span class="name">{{ player.name }}</span>
+    <span class="club">{{ player.club }}</span> 
+</player>

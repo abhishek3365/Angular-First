@@ -24,7 +24,14 @@ class Player{
 
 @Component({
     selector: 'player-form',
-    templateUrl: './player-form-component.html' 
+    templateUrl: './player-form-component.html',
+    styles: [
+        `
+        .card {
+          background-color: gray;
+        }
+        `
+      ] 
 })
 class JokeFormComponent {
     @Output() playerCreated = new EventEmitter<Player>();
