@@ -4,7 +4,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import {
     Component,NgModule,Input,Output,EventEmitter,ViewEncapsulation,SimpleChanges,
     OnChanges,OnInit,DoCheck,AfterContentInit,AfterContentChecked,AfterViewInit,AfterViewChecked,
-    OnDestroy, ViewChild , ViewChildren, QueryList, ContentChild, ContentChildren, ElementRef
+    OnDestroy, ViewChild , ViewChildren, QueryList, ContentChild, ContentChildren, ElementRef,
+    Directive, Renderer
 } from '@angular/core';
 
 class Player{
@@ -23,26 +24,36 @@ class Player{
     }
 }
 
-@Component({
-    selector: 'player-form',
-    templateUrl: './player-form-component.html',
-    styles: [
-        `
-        .card {
-          background-color: gray;
-        }
-        `
-      ] 
+// @Component({
+//     selector: 'player-form',
+//     templateUrl: './player-form-component.html',
+//     styles: [
+//         `
+//         .card {
+//           background-color: gray;
+//         }
+//         `
+//       ] 
+// })
+// class PlayerFormComponent {
+//     @Output() playerCreated = new EventEmitter<Player>();
+
+//     createPlayer( name : string , club : string ){
+//         this.playerCreated.emit( new Player(name,club) );
+//     }
+
+// }
+
+@Directive({
+    selector : "[ccCardHover]"
 })
-class PlayerFormComponent {
-    @Output() playerCreated = new EventEmitter<Player>();
-
-    createPlayer( name : string , club : string ){
-        console.log ( "here 1" , name , club  );
-        this.playerCreated.emit( new Player(name,club) );
+class CardHoverDirective {
+    constructor( private el : ElementRef , private renderer : Renderer ){
+        // el.nativeElement.style.backgroundColor = 'grey';
+        renderer.setElementStyle( el.nativeElement , 'backgroundColor' , 'gray');
     }
-
 }
+
 
 @Component({
     selector : 'player',
@@ -51,48 +62,6 @@ class PlayerFormComponent {
 class PlayerComponent
 {
     @Input() data: Player;
-
-    // constructor() {
-    //     console.log(`new - data is ${this.data}`);
-    //   }
-    
-    //   ngOnChanges(changes: SimpleChanges) {
-    //     console.log(`ngOnChanges - data is ${this.data}`);
-    //     for (let key in changes) {
-    //         console.log(`${key} changed.
-    //         Current: ${changes[key].currentValue}.
-    //         Previous: ${changes[key].previousValue}`);
-    //       }
-    //   }
-    
-    //   ngOnInit() {
-    //     console.log(`ngOnInit  - data is ${this.data}`);
-    //   }
-    
-    //   ngDoCheck() {
-    //     console.log("ngDoCheck")
-    //   }
-    
-    //   ngAfterContentInit() {
-    //     console.log("ngAfterContentInit");
-    //   }
-    
-    //   ngAfterContentChecked() {
-    //     console.log("ngAfterContentChecked");
-    //   }
-    
-    //   ngAfterViewInit() {
-    //     console.log("ngAfterViewInit");
-    //   }
-    
-    //   ngAfterViewChecked() {
-    //     console.log("ngAfterViewChecked");
-    //   }
-    
-    //   ngOnDestroy() {
-    //     console.log("ngOnDestroy");
-    //   }
-
 }
 
 @Component({
@@ -107,25 +76,6 @@ class PlayerListComponent{
     @ViewChildren(PlayerComponent) playerViewChildren: QueryList<PlayerComponent>;
     @ViewChild("header") headerEl: ElementRef;
     @ContentChild(PlayerComponent) playerContentChild: PlayerComponent;
-
-    constructor()
-    {
-        console.log(`new - playerViewChild is ${JSON.stringify(this.playerViewChild)}`);
-    }
-
-    ngAfterContentInit() {
-        console.log(`ngAfterContentInit - jokeContentChild is ${this.playerContentChild}`);
-    }
-
-    ngAfterViewInit() {
-        console.log(`ngAfterViewInit - playerViewChild is ${JSON.stringify(this.playerViewChild)}`);
-        
-        let jokes: PlayerComponent[] = this.playerViewChildren.toArray(); 
-        console.log(jokes);
-
-        console.log(`ngAfterViewInit - headerEl is ${this.headerEl}`);
-        this.headerEl.nativeElement.textContent = "Best Joke Machine";
-    }
     
 }
 
@@ -142,7 +92,7 @@ class AppComponent {
 
 @NgModule({
     imports : [BrowserModule],
-    declarations : [AppComponent,PlayerListComponent,PlayerComponent,PlayerFormComponent],
+    declarations : [AppComponent,PlayerListComponent,PlayerComponent,CardHoverDirective],
     bootstrap : [AppComponent]
 })
 export class AppModule{
