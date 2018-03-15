@@ -2,8 +2,8 @@
     <h4 class="card-title">
         <ng-content select=".name"></ng-content>
     </h4>
-    <p class="card-text" [hidden]="data.hide">
+    <p class="card-text" [style.display]="'none'">
         <ng-content select=".club"></ng-content>
     </p>
-    <a class="btn btn-warning" (click)="data.toggle()">Show Club</a>
+    <!-- <a class="btn btn-warning" (click)="data.toggle()">Show Club</a> -->
 </div>
