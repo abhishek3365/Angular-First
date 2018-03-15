@@ -1,1 +1,6 @@
-<player-list></player-list>
+<player-list>
+    <player [data]="player">
+        <span class="name">{{ player.name }}</span>
+        <span class="club">{{ player.club }}</span> 
+    </player>
+</player-list>
